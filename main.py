@@ -37,10 +37,15 @@ resources = {
 }
 
 
+def get_cost(option):
+    """Returns the total cost of an option"""
+    return MENU[option]['cost']
+
+
 def handle_input():
     """Manages input to the coffee maker machine"""
     option = input("What would you like?(express/latte/cappuccino")
-    if option in MENU:
+    if option in MENU.keys():
         is_enough = check_resources(option)
         if is_enough:
             get_money(option)
@@ -57,7 +62,20 @@ def handle_input():
 
 
 def check_resources(option):
-    return False
+    """Checks if there are enough resources available to prepare the option"""
+    ingredients = MENU[option]['ingredients']
+    num = 0
+    if ingredients['water'] > resources['water']:
+        num += 1
+    if ingredients['milk'] > resources['milk']:
+        num += 1
+    if ingredients['coffee'] > resources['coffee']:
+        num += 1
+
+    if num > 0:
+        return False
+    else:
+        return True
 
 
 def get_money(option):
@@ -66,6 +84,9 @@ def get_money(option):
 
 def generate():
     """Generate report on resources left in machine"""
+    print("The report is show below:")
+    for resource in resources:
+        print(resource.title() + "\t"+str(resources[resource]))
     pass
 
 
