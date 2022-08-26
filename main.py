@@ -36,15 +36,23 @@ resources = {
     "coffee": 100,
 }
 
+amtPaid = 0
+
+coins = {'quarter': 0.50, 'dime': 0.10, 'penny': 0.01, 'nickel': 0.05}
+
 
 def get_cost(option):
     """Returns the total cost of an option"""
     return MENU[option]['cost']
 
 
+def get_coin_price(option):
+    return coins[option]
+
+
 def handle_input():
     """Manages input to the coffee maker machine"""
-    option = input("What would you like?(express/latte/cappuccino")
+    option = input("What would you like?(express/latte/cappuccino):  ")
     if option in MENU.keys():
         is_enough = check_resources(option)
         if is_enough:
@@ -80,13 +88,29 @@ def check_resources(option):
 
 def get_money(option):
     """Gets the money needed for the coffee"""
+    print("Please enter the quantity of coins you have:")
+    entered_coins = []
+    total = 0
+    for coin in coins:
+        qty = int(input(f"{coin} : "))
+        coin_price = get_coin_price(coin)
+        t_coin_price = qty * coin_price
+        coin_quantity = {'coin': coin, 'qty': qty, 'cost': coin_price, 'total': "{0:.2f}".format(t_coin_price)}
+        total += t_coin_price
+        entered_coins.append(coin_quantity)
+
+    print(entered_coins)
+    total = "{0:.2f}".format(total)
+    item_cost = "{0:.2f}".format(get_cost(option))
+    print(f"The total entered is "+total+f" and the {option} costs: {item_cost}")
+    difference = float(total) - float(item_cost)
 
 
 def generate():
     """Generate report on resources left in machine"""
     print("The report is show below:")
     for resource in resources:
-        print(resource.title() + "\t"+str(resources[resource]))
+        print(resource.title() + "\t" + str(resources[resource]))
     pass
 
 
